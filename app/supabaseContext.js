@@ -12,7 +12,7 @@ export const SupabaseProvider = ({ children }) => {
   const [newsletterData, setNewsletterData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMerch, setLoadingMerch] = useState(true);
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(null);
   const [error,setError] = useState('')
   const [merch,setMerch] = useState([])
   const [guadagnoTotale, setGuadagnoTotale] = useState();
@@ -20,7 +20,7 @@ export const SupabaseProvider = ({ children }) => {
   const router = useRouter();
 
   const fetchSession = async () => {
-    if (user) {
+    if (user && user) {
       const res = await fetch("/api/newsletter");
       if (res.ok) {
         const data = await res.json();
@@ -35,7 +35,7 @@ export const SupabaseProvider = ({ children }) => {
 
  const fetchMerch = async () => {
   setLoadingMerch(true);
-  if( user ){
+  if( user && user ){
 const res = await fetch("/api/fetchMerch")
 if(res.ok){
   const data = await res.json()
