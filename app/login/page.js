@@ -15,10 +15,9 @@ export default function Login() {
 
     try {
       await signIn(email, password);
-    } catch (error) {
-      console.error('Login failed:', error.message);
-    }
-  };
+    } catch (error) {}
+      
+  }
 
   return (
     <form onSubmit={handleSubmit}>

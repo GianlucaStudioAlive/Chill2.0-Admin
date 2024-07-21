@@ -75,7 +75,7 @@ return
 
     if (res.ok) {
       const data = await res.json();
-      console.log(data);
+    
       if (data.user) {
         setUser(data.user.id);
         router.push('/admin'); // Navigate to the admin page without refreshing

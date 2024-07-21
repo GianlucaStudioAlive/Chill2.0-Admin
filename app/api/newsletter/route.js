@@ -15,7 +15,7 @@ export async function GET(request) {
 
     if (error) {
       throw error;
-    }console.log(data)
+    }
 
     // Rispondi con i dati ottenuti
     return NextResponse.json(data);
