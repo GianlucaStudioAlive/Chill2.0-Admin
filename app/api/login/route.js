@@ -22,7 +22,7 @@ export async function POST(request) {
   console.log('Login successful:', data.user.id === userID);
   if (data.user.id === userID) {
     const response = NextResponse.json({ user: data.user });
-  
+   
     return response; // Return the response after setting the cookie
   } else {
     console.log('Unauthorized access attempt');
