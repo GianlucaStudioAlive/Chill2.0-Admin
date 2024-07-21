@@ -67,13 +67,13 @@ return
 
 
   const signIn = async (email, password) => {
-    const res = await fetch("/api/login", {
+    const responce = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
 
-    if (res.ok) {
+    if (responce.ok) {
       const data = await res.json();
       console.log(data);
       if (data.user) {
@@ -81,6 +81,7 @@ return
         router.push('/admin'); // Navigate to the admin page without refreshing
       }
     } else {
+      console.log(error)
       setError('Non sei autorizzato ad accedere a questa pagina')
       throw new Error('Login failed');
     }
