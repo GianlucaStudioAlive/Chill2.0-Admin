@@ -9,10 +9,14 @@ const SupabaseContext = createContext();
 
 export const SupabaseProvider = ({ children }) => {
   const [session, setSession] = useState(null);
-  const [newsletterData, setNewsletterData] = useState(null);
+  const [newsletterData, setNewsletterData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const [loadingMerch, setLoadingMerch] = useState(true);
+  const [user, setUser] = useState(true);
   const [error,setError] = useState('')
+  const [merch,setMerch] = useState([])
+  const [guadagnoTotale, setGuadagnoTotale] = useState();
+  const [pezziVenduti, setPezziVenduti] = useState();
   const router = useRouter();
 
   const fetchSession = async () => {
@@ -20,8 +24,8 @@ export const SupabaseProvider = ({ children }) => {
       const res = await fetch('/api/newsletter');
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
-        setNewsletterData(data);
+      
+                setNewsletterData(data)
       } else {
         throw new Error('Failed to fetch newsletter data');
       }
@@ -29,9 +33,38 @@ export const SupabaseProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    fetchSession();
-  }, [user]);
+ const fetchMerch = async () => {
+  setLoadingMerch(true);
+  if( user ){
+const res = await fetch('/api/fetchMerch')
+if(res.ok){
+  const data = await res.json()
+  setMerch(data)
+  const guadagno = data.map((item) => item.price);
+
+  let somma = 0;
+  for (let i = 0; i < guadagno.length; i++) {
+    somma += guadagno[i];
+  }
+  const venduto = data.map((item) => item.quantity);
+
+  let sold = 0;
+  for (let i = 0; i < venduto.length; i++) {
+    sold += venduto[i];
+  }
+  setPezziVenduti(sold);
+
+  setGuadagnoTotale(somma.toFixed(2));
+setLoadingMerch(false);  
+
+ 
+} else {
+  throw new Error('Failed to fetch merch data');
+}
+  }
+return
+ }
+
 
   const signIn = async (email, password) => {
     const res = await fetch('/api/login', {
@@ -53,10 +86,10 @@ export const SupabaseProvider = ({ children }) => {
     }
   };
 
-  console.log(newsletterData, user);
+ 
 
   return (
-    <SupabaseContext.Provider value={{ signIn, newsletterData, user, loading,fetchSession,error }}>
+    <SupabaseContext.Provider value={{ signIn, newsletterData, user, loading,fetchSession,error,fetchMerch,merch,guadagnoTotale,pezziVenduti,loadingMerch }}>
       {children}
     </SupabaseContext.Provider>
   );

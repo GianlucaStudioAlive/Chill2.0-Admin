@@ -12,10 +12,10 @@ export async function GET(request) {
     const { data, error } = await supabase
       .from('newsletter')  // sostituisci 'nome_tabella' con il nome della tua tabella
       .select('*');
-console.log(data)
+
     if (error) {
       throw error;
-    }
+    }console.log(data)
 
     // Rispondi con i dati ottenuti
     return NextResponse.json(data);
