@@ -21,7 +21,7 @@ export const SupabaseProvider = ({ children }) => {
 
   const fetchSession = async () => {
     if (user) {
-      const res = await fetch('/api/newsletter');
+      const res = await fetch("/api/newsletter");
       if (res.ok) {
         const data = await res.json();
       
@@ -36,7 +36,7 @@ export const SupabaseProvider = ({ children }) => {
  const fetchMerch = async () => {
   setLoadingMerch(true);
   if( user ){
-const res = await fetch('/api/fetchMerch')
+const res = await fetch("/api/fetchMerch")
 if(res.ok){
   const data = await res.json()
   setMerch(data)
@@ -67,9 +67,9 @@ return
 
 
   const signIn = async (email, password) => {
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
 
