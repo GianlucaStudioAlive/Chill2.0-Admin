@@ -103,8 +103,8 @@ const Page = () => {
       <div className="container">
           <div className="row d-flex justify-content-center ">
           <div className="col-12 col-lg-4">
-              <div className="row d-flex d-lg-grid justify-content-lg-center  g-5 mt-3 mb-3  ">  
-                <div className="col-lg-7 col-4 quadratoSuperiore " onClick={()=>setOrdiniTotali(true)} style={{cursor:'pointer'}}>
+              <div className="row d-flex d-lg-grid justify-content-lg-center justify-content-between g-5 mt-3 mb-3  ">  
+                <div className="col-lg-7  col-md-4 col-5 quadratoSuperiore " onClick={()=>setOrdiniTotali(true)} style={{cursor:'pointer'}}>
                 <div className="row ">  
                   <div className="col-12 text-center">
                     Ordini Totali
@@ -116,7 +116,7 @@ const Page = () => {
                 </div>
                  
                   </div>
-                <div className="col-lg-7 col-4 quadratoSuperiore">
+                <div className="col-lg-7 col-md-4 col-12 quadratoSuperiore order-3">
                 <div className="row ">  
                   <div className="col-12 text-center">
                   Incasso Totale in €
@@ -126,7 +126,7 @@ const Page = () => {
                   </div>
                 </div>
                 </div>
-                <div className="col-lg-7 col-4 quadratoSuperiore">
+                <div className="col-lg-7 col-md-4 col-5 quadratoSuperiore">
                 <div className="row ">  
                   <div className="col-12 text-center">
                  Pezzi Venduti
@@ -254,7 +254,7 @@ const Page = () => {
                   <div className="col-12">
                     <div className="row d-flex align-items-center justify-content-between">
                    
-                      <div className="col-6">
+                      <div className="col-6 text-white">
                         <h6>Ordini Totali : {merch.length}</h6>
                         <h6>Pezzi Venduti : {pezziVenduti}</h6>
                         <h6>Incasso Totale : {guadagnoTotale} € </h6>
