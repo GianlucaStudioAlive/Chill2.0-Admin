@@ -20,7 +20,7 @@ export const SupabaseProvider = ({ children }) => {
   const router = useRouter();
 
   const fetchSession = async () => {
-    if (user && user) {
+    if ( user) {
       const res = await fetch("/api/newsletter");
       if (res.ok) {
         const data = await res.json();
@@ -35,7 +35,7 @@ export const SupabaseProvider = ({ children }) => {
 
  const fetchMerch = async () => {
   setLoadingMerch(true);
-  if( user && user ){
+  if(  user ){
 const res = await fetch("/api/fetchMerch")
 if(res.ok){
   const data = await res.json()
