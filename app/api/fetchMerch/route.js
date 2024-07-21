@@ -15,7 +15,7 @@ const {data,error}= await supabase
 .select('*')
 .order('created_at',{ascending: false})
 if(error){throw error}
-
+console.log(data)
 return NextResponse.json(data)
 
 

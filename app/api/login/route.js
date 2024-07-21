@@ -7,15 +7,15 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const userID = process.env.ADMIN_ID;
 
 export async function POST(request) {
-
+  
   const { email, password } = await request.json();
 
- 
+
 
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-   
+    console.log('Login error:', error.message);
     return NextResponse.json({ error: error.message }, { status: 401 });
   }
 
@@ -25,7 +25,7 @@ export async function POST(request) {
    
     return response; // Return the response after setting the cookie
   } else {
-    
+    console.log('Unauthorized access attempt');
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
 }
