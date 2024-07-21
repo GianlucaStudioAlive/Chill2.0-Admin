@@ -22,11 +22,7 @@ export async function POST(request) {
   console.log('Login successful:', data.user.id === userID);
   if (data.user.id === userID) {
     const response = NextResponse.json({ user: data.user });
-    response.cookies.set('sb-access-token', data.session.access_token, {
-      path: '/',
-      httpOnly: true,
-    });
-    console.log('Token set in cookie:', data.session.access_token);
+  
     return response; // Return the response after setting the cookie
   } else {
     console.log('Unauthorized access attempt');
