@@ -7,25 +7,24 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const userID = process.env.ADMIN_ID;
 
 export async function POST(request) {
-  
-  const { email, password } = await request.json();
+  try {
+    const { email, password } = await request.json();
 
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
+    if (error) {
+      console.log('Login error:', error.message);
+      return NextResponse.json({ error: error.message }, { status: 401 });
+    }
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-  if (error) {
-    console.log('Login error:', error.message);
-    return NextResponse.json({ error: error.message }, { status: 401 });
-  }
-
-
-  if (data.user.id === userID) {
-    const response = NextResponse.json({ user: data.user });
-   
-    return response; // Return the response after setting the cookie
-  } else {
-    console.log('Unauthorized access attempt');
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    if (data.user.id === userID) {
+      return NextResponse.json({ user: data.user });
+    } else {
+      console.log('Unauthorized access attempt');
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+  } catch (error) {
+    console.error('Request handling error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
