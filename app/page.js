@@ -31,7 +31,6 @@ export default function Login() {
                   height={1000}
                   alt="sofa"
                   className="titolo"
-                  // style={{position:'absolute',top:'20px',left:'20px', width: "300px", height: "300px",objectFit:'contain' }}
                   style={{width: "300px", height: "auto" }}
                 />
             </div>
