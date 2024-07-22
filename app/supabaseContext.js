@@ -35,7 +35,7 @@ export const SupabaseProvider = ({ children }) => {
   };
   const fetchMail= async () => {
     if ( user) {
-      const res = await fetch("/api/mail");
+      const res = await fetch("/");
       if (res.ok) {
         const data = await res.json();
       console.log(data);
@@ -83,7 +83,7 @@ return
 
 
   const signIn = async (email, password) => {
-    const res = await fetch("/api/login", {
+    const res = await fetch("/app/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
