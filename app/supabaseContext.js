@@ -14,7 +14,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 
 export const SupabaseProvider = ({ children }) => {
-  const [session, setSession] = useState(null);
+
   const [newsletterData, setNewsletterData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMerch, setLoadingMerch] = useState(true);
@@ -26,26 +26,15 @@ export const SupabaseProvider = ({ children }) => {
   const [allMail,setAllMail]=useState([])
   const router = useRouter();
 
-  const [adminID, setAdminID] = useState('');
+  
 
-  // useEffect(() => {
-  //   if(user){const fetchAdminID = async () => {
-  //     const res = await fetch('/api/getAdmin');
-  //     const data = await res.json();
-  //     if (data.adminID) {
-  //       setAdminID(data.adminID);
-  //     } else {
-  //       console.error('Failed to fetch admin ID');
-  //     }
-  //   };
-  //   fetchAdminID();}else{console.log('no admin')}
-  // }, [user]);
+
 
 
 useEffect(()=>{if(user){  const fetchNewsletter = async () => {
     if ( user) {
       const { data, error } = await supabase
-      .from('newsletter')  // sostituisci 'nome_tabella' con il nome della tua tabella
+      .from('newsletter') 
       .select('*')
       if (data) {
    
@@ -59,7 +48,7 @@ useEffect(()=>{if(user){  const fetchNewsletter = async () => {
   }
   
   fetchNewsletter()
-  }else{console.log('none')}},[user])
+  }else{return}},[user])
 
 
 useEffect(()=>{if(user){  const fetchMail= async () => {
@@ -78,7 +67,7 @@ useEffect(()=>{if(user){  const fetchMail= async () => {
      }
     
   };fetchMail()
-}else{console.log('no user')}
+}else{return}
 },[user])
 
 const fetchMail= async () => {
@@ -107,8 +96,7 @@ if(user){ const fetchMerch = async () => {
 const {data,error}= await supabase
 .from('merch')
 .select('*')
-// .order('created_at',{ascending: false})
-console.log(data)
+
 if(data){
 
   setMerch(data)
@@ -137,7 +125,7 @@ setLoadingMerch(false);
   fetchMerch()
 
 } else {
-console.log(' no user')
+return
 }
  },[user,])
 
@@ -190,7 +178,7 @@ console.log(' no user')
 
     // Set user data and navigate to admin page
     setUser(userData.user);
-    router.push('/admin'); // Navigate to the admin page without refreshing
+    router.push('/admin'); 
 
   } catch (err) {
     console.error(err);

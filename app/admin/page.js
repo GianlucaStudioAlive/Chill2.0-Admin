@@ -1,7 +1,7 @@
 // app/admin/page.js
 "use client";
 
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Button } from "react-bootstrap";
 import { useSupabase } from "../supabaseContext";
 import React from "react";
@@ -9,19 +9,15 @@ import Modal from "react-bootstrap/Modal";
 import Image from "next/image";
 import { Table } from "react-bootstrap";
 import { format } from "date-fns";
-import Link from "next/link";
+
 const Page = () => {
   const {
     newsletterData,
     user,
-    fetchSession,
-    error,
-  
     merch,
     guadagnoTotale,
     pezziVenduti,
     loadingMerch,
-  
    fetchMail,
     allMail,
   } = useSupabase();
@@ -85,53 +81,9 @@ const Page = () => {
     fetchMail();
   };
 
-  const fetchMerch = async () => {
- const {data,error}= await supabase
-  .from('merch')
-  .select('*')
-  // .order('created_at',{ascending: false})
-  console.log(data)
-  if(data){
-  
-    setMerch(data)
-    const guadagno = data.map((item) => item.price);
-  
-    let somma = 0;
-    for (let i = 0; i < guadagno.length; i++) {
-      somma += guadagno[i];
-    }
-    const venduto = data.map((item) => item.quantity);
-  
-    let sold = 0;
-    for (let i = 0; i < venduto.length; i++) {
-      sold += venduto[i];
-    }
-    setPezziVenduti(sold);
-  
-    setGuadagnoTotale(somma.toFixed(2));
-  setLoadingMerch(false);  
-  
-   
-  } else {
-    console.log(error)
-  }
-
-  }
 
 
 
-  // useEffect(() => {
-  //   fetchSession();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  // useEffect(() => {
-  //   fetchMerch();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-  // useEffect(() => {
-  //   fetchMail();
-  // }, []);
 
   const loader = (
     <svg viewBox="25 25 50 50">
