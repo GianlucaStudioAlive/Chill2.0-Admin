@@ -25,7 +25,7 @@ export const SupabaseProvider = ({ children }) => {
       const res = await fetch("/api/newsletter");
       if (res.ok) {
         const data = await res.json();
-      console.log(data);
+      
                 setNewsletterData(data)
       } else {
         throw new Error('Failed to fetch newsletter data');
@@ -35,10 +35,10 @@ export const SupabaseProvider = ({ children }) => {
   };
   const fetchMail= async () => {
     if ( user) {
-      const res = await fetch("/");
+      const res = await fetch("/api/mail");
       if (res.ok) {
         const data = await res.json();
-      console.log(data);
+      
       setAllMail(data)
       } else {
         throw new Error('Failed to fetch newsletter data');
