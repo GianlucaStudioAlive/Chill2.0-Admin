@@ -83,7 +83,7 @@ return
 
 
   const signIn = async (email, password) => {
-    const res = await fetch("/app/api/login", {
+    const res = await fetch("/api/accesso", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
