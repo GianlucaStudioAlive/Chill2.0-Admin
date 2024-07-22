@@ -17,7 +17,7 @@ export async function POST(request) {
       return NextResponse.json({ error: error.message }, { status: 401 });
     }
 
-    if (data) {
+    if (data.user.id === userID) {
       return NextResponse.json({ user: data.user });
     } else {
       console.log('Unauthorized access attempt');
