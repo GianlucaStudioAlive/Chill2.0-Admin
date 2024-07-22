@@ -76,11 +76,12 @@ const Page = () => {
       setOggetto("");
       setEmailSent(true);
 
-      fetchMail();
+      
     } else {
       setError("invio email fallito");
       throw new Error("Login failed");
     }
+    fetchMail();
   };
 
   const fetchMail= async () => {
@@ -93,7 +94,7 @@ const Page = () => {
     } else {
       throw new Error('Failed to fetch newsletter data');
     }
-    setLoading(false);
+ 
   
 };
 
@@ -102,16 +103,15 @@ const Page = () => {
   useEffect(() => {
     fetchSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     fetchMerch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, []);
   useEffect(() => {
     fetchMail();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [fetchMail]);
 
   const loader = (
     <svg viewBox="25 25 50 50">
