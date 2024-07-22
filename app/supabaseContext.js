@@ -34,7 +34,7 @@ export const SupabaseProvider = ({ children }) => {
     }
   };
   const fetchMail= async () => {
-    if ( user) {
+    
       const res = await fetch("/api/mail");
       if (res.ok) {
         const data = await res.json();
@@ -44,7 +44,7 @@ export const SupabaseProvider = ({ children }) => {
         throw new Error('Failed to fetch newsletter data');
       }
       setLoading(false);
-    }
+    
   };
 
 
