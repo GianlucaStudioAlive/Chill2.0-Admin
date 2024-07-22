@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import sgMail from "@sendgrid/mail";
-
+import { createClient } from '@supabase/supabase-js';
+// Configura il client Supabase
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export async function POST(request) {
@@ -14,7 +18,20 @@ export async function POST(request) {
     );
   }
 
-  const { newsletter,messaggio,titolo, oggetto } = data;
+
+
+ const { newsletter,messaggio,titolo, oggetto } = data;
+  const {data:postMail,error}=await supabase
+  .from('mail')
+  .insert([{
+    titolo:titolo,
+    oggetto:oggetto,
+    messaggio:messaggio
+  }])
+  .select()
+if(error){console.log(error)}
+
+ 
 
   const emailPromises = newsletter.map(( email ) => {
   

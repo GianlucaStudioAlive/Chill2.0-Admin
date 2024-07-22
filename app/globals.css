@@ -142,6 +142,37 @@ z-index: 100;
  
 }
 
+.outer-container {
+  height: 40vh;
+  overflow: hidden;
+}
+
+.inner-container {
+  max-height: 40vh;
+  overflow-y: auto;
+  /* Aggiungi padding per evitare che il contenuto si tagli con la scrollbar */
+  padding-right: 15px; /* Regola questo valore in base alla larghezza della scrollbar del browser */
+}
+
+/* Nascondi la scrollbar */
+.inner-container::-webkit-scrollbar {
+  width: 0;  /* Per i browser Webkit */
+}
+
+/* Mostra la scrollbar solo quando si passa con il mouse */
+.outer-container:hover .inner-container::-webkit-scrollbar {
+  width: 12px; /* Regola la larghezza della scrollbar */
+}
+
+/* Personalizza la scrollbar */
+.inner-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.inner-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 
 
 @media (prefers-color-scheme: dark) {

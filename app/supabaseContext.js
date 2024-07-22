@@ -12,11 +12,12 @@ export const SupabaseProvider = ({ children }) => {
   const [newsletterData, setNewsletterData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMerch, setLoadingMerch] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(true);
   const [error,setError] = useState('')
   const [merch,setMerch] = useState([])
   const [guadagnoTotale, setGuadagnoTotale] = useState();
   const [pezziVenduti, setPezziVenduti] = useState();
+  const [allMail,setAllMail]=useState([])
   const router = useRouter();
 
   const fetchSession = async () => {
@@ -24,7 +25,7 @@ export const SupabaseProvider = ({ children }) => {
       const res = await fetch("/api/newsletter");
       if (res.ok) {
         const data = await res.json();
-      
+      console.log(data);
                 setNewsletterData(data)
       } else {
         throw new Error('Failed to fetch newsletter data');
@@ -32,6 +33,21 @@ export const SupabaseProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  const fetchMail= async () => {
+    if ( user) {
+      const res = await fetch("/api/mail");
+      if (res.ok) {
+        const data = await res.json();
+      console.log(data);
+      setAllMail(data)
+      } else {
+        throw new Error('Failed to fetch newsletter data');
+      }
+      setLoading(false);
+    }
+  };
+
+
 
  const fetchMerch = async () => {
   setLoadingMerch(true);
@@ -89,7 +105,7 @@ return
  
 
   return (
-    <SupabaseContext.Provider value={{ signIn, newsletterData, user, loading,fetchSession,error,fetchMerch,merch,guadagnoTotale,pezziVenduti,loadingMerch }}>
+    <SupabaseContext.Provider value={{ signIn, newsletterData, user, loading,fetchSession,error,fetchMerch,merch,guadagnoTotale,pezziVenduti,loadingMerch,fetchMail,allMail }}>
       {children}
     </SupabaseContext.Provider>
   );
