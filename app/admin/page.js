@@ -16,12 +16,13 @@ const Page = () => {
     user,
     fetchSession,
     error,
-    fetchMerch,
+  
     merch,
     guadagnoTotale,
     pezziVenduti,
     loadingMerch,
-   setAllMail,
+  
+   fetchMail,
     allMail,
   } = useSupabase();
   const [messaggio, setMessaggio] = useState("");
@@ -84,34 +85,53 @@ const Page = () => {
     fetchMail();
   };
 
-  const fetchMail= async () => {
-    
-    const res = await fetch("/api/mail");
-    if (res.ok) {
-      const data = await res.json();
-    
-    setAllMail(data)
-    } else {
-      throw new Error('Failed to fetch newsletter data');
-    }
- 
+  const fetchMerch = async () => {
+ const {data,error}= await supabase
+  .from('merch')
+  .select('*')
+  // .order('created_at',{ascending: false})
+  console.log(data)
+  if(data){
   
-};
+    setMerch(data)
+    const guadagno = data.map((item) => item.price);
+  
+    let somma = 0;
+    for (let i = 0; i < guadagno.length; i++) {
+      somma += guadagno[i];
+    }
+    const venduto = data.map((item) => item.quantity);
+  
+    let sold = 0;
+    for (let i = 0; i < venduto.length; i++) {
+      sold += venduto[i];
+    }
+    setPezziVenduti(sold);
+  
+    setGuadagnoTotale(somma.toFixed(2));
+  setLoadingMerch(false);  
+  
+   
+  } else {
+    console.log(error)
+  }
+
+  }
 
 
 
-  useEffect(() => {
-    fetchSession();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   fetchSession();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
-  useEffect(() => {
-    fetchMerch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  useEffect(() => {
-    fetchMail();
-  }, [fetchMail]);
+  // useEffect(() => {
+  //   fetchMerch();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+  // useEffect(() => {
+  //   fetchMail();
+  // }, []);
 
   const loader = (
     <svg viewBox="25 25 50 50">

@@ -4,8 +4,14 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
+import { createClient } from '@supabase/supabase-js';
 const SupabaseContext = createContext();
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+
 
 export const SupabaseProvider = ({ children }) => {
   const [session, setSession] = useState(null);
@@ -14,47 +20,97 @@ export const SupabaseProvider = ({ children }) => {
   const [loadingMerch, setLoadingMerch] = useState(true);
   const [user, setUser] = useState(null);
   const [error,setError] = useState('')
-  const [merch,setMerch] = useState([])
+  const [merch,setMerch] = useState()
   const [guadagnoTotale, setGuadagnoTotale] = useState();
   const [pezziVenduti, setPezziVenduti] = useState();
   const [allMail,setAllMail]=useState([])
   const router = useRouter();
 
-  const fetchSession = async () => {
+  const [adminID, setAdminID] = useState('');
+
+  // useEffect(() => {
+  //   if(user){const fetchAdminID = async () => {
+  //     const res = await fetch('/api/getAdmin');
+  //     const data = await res.json();
+  //     if (data.adminID) {
+  //       setAdminID(data.adminID);
+  //     } else {
+  //       console.error('Failed to fetch admin ID');
+  //     }
+  //   };
+  //   fetchAdminID();}else{console.log('no admin')}
+  // }, [user]);
+
+
+useEffect(()=>{if(user){  const fetchNewsletter = async () => {
     if ( user) {
-      const res = await fetch("/api/newsletter");
-      if (res.ok) {
-        const data = await res.json();
+      const { data, error } = await supabase
+      .from('newsletter')  // sostituisci 'nome_tabella' con il nome della tua tabella
+      .select('*')
+      if (data) {
+   
       
                 setNewsletterData(data)
       } else {
         throw new Error('Failed to fetch newsletter data');
       }
-      setLoading(false);
+  
     }
-  };
-  const fetchMail= async () => {
+  }
+  
+  fetchNewsletter()
+  }else{console.log('none')}},[user])
+
+
+useEffect(()=>{if(user){  const fetchMail= async () => {
     
-      const res = await fetch("/api/mail");
-      if (res.ok) {
-        const data = await res.json();
+    if(  user ){ const { data, error } = await supabase
+    .from("mail")
+    .select("*")
+    .order("created_at", { ascending: false });
+      if (data) {
+      
       
       setAllMail(data)
       } else {
         throw new Error('Failed to fetch newsletter data');
       }
-      setLoading(false);
+     }
     
-  };
+  };fetchMail()
+}else{console.log('no user')}
+},[user])
+
+const fetchMail= async () => {
+    
+  if(  user ){ const { data, error } = await supabase
+  .from("mail")
+  .select("*")
+  .order("created_at", { ascending: false });
+    if (data) {
+    
+    
+    setAllMail(data)
+    } else {
+      throw new Error('Failed to fetch newsletter data');
+    }
+   }
+  
+}
+
+useEffect(()=>{
+   
+
+if(user){ const fetchMerch = async () => {
 
 
+const {data,error}= await supabase
+.from('merch')
+.select('*')
+// .order('created_at',{ascending: false})
+console.log(data)
+if(data){
 
- const fetchMerch = async () => {
-  setLoadingMerch(true);
-  if(  user ){
-const res = await fetch("/api/fetchMerch")
-if(res.ok){
-  const data = await res.json()
   setMerch(data)
   const guadagno = data.map((item) => item.price);
 
@@ -75,37 +131,78 @@ setLoadingMerch(false);
 
  
 } else {
-  throw new Error('Failed to fetch merch data');
+  console.log(error)
 }
   }
-return
- }
+  fetchMerch()
+
+} else {
+console.log(' no user')
+}
+ },[user,])
 
 
-  const signIn = async (email, password) => {
-    const res = await fetch("/api/accesso", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
 
-    if (res.ok) {
-      const data = await res.json();
+ const signIn = async (email, password) => {
+  try {
+    // Attempt to sign in with provided email and password
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
     
-      if (data.user) {
-        setUser(data.user.id);
-        router.push('/admin'); // Navigate to the admin page without refreshing
-      }
-    } else {
-      setError('Non sei autorizzato ad accedere a questa pagina')
-      throw new Error('Login failed');
+    if (signInError) {
+      console.error(signInError);
+      setError('Errore di autenticazione');
+      return;
     }
-  };
 
+    // Fetch admin ID securely from server-side
+    const res = await fetch('/api/getAdmin');
+    const dataAdmin = await res.json();
+    
+    if (!dataAdmin.adminID) {
+      console.error('Admin ID not found');
+      setError('Errore di configurazione');
+      return;
+    }
+
+    // Validate if the signed-in user is the admin
+    if (signInData.user.id !== dataAdmin.adminID) {
+      setError('Non sei autorizzato ad accedere a questa pagina');
+      return;
+    }
+
+    // Get session data
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+    
+    if (sessionError) {
+      console.error(sessionError);
+      setError('Errore nel recupero della sessione');
+      return;
+    }
+
+    // Get user data
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    
+    if (userError) {
+      console.error(userError);
+      setError('Errore nel recupero dei dati utente');
+      return;
+    }
+
+    // Set user data and navigate to admin page
+    setUser(userData.user);
+    router.push('/admin'); // Navigate to the admin page without refreshing
+
+  } catch (err) {
+    console.error(err);
+    setError('Si è verificato un errore imprevisto');
+  }
+};
+
+  
  
 
   return (
-    <SupabaseContext.Provider value={{ signIn, newsletterData, user, loading,fetchSession,error,fetchMerch,merch,guadagnoTotale,pezziVenduti,loadingMerch,fetchMail,allMail,setAllMail }}>
+    <SupabaseContext.Provider value={{ signIn, newsletterData, user, loading,error,merch,guadagnoTotale,pezziVenduti,loadingMerch,fetchMail,allMail,setAllMail }}>
       {children}
     </SupabaseContext.Provider>
   );
