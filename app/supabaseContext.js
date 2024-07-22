@@ -12,7 +12,7 @@ export const SupabaseProvider = ({ children }) => {
   const [newsletterData, setNewsletterData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMerch, setLoadingMerch] = useState(true);
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
   const [error,setError] = useState('')
   const [merch,setMerch] = useState([])
   const [guadagnoTotale, setGuadagnoTotale] = useState();
