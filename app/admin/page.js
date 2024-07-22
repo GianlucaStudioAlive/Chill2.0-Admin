@@ -105,7 +105,7 @@ const Page = () => {
 
   const openModalMail = (mail) => {
     setModalMail(true);
-    console.log(mail);
+
     setTitoloMailModal(mail.titolo);
     setOggettoMail(mail.oggetto);
     setMessaggioMail(mail.messaggio)
