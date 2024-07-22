@@ -105,7 +105,7 @@ return
  
 
   return (
-    <SupabaseContext.Provider value={{ signIn, newsletterData, user, loading,fetchSession,error,fetchMerch,merch,guadagnoTotale,pezziVenduti,loadingMerch,fetchMail,allMail }}>
+    <SupabaseContext.Provider value={{ signIn, newsletterData, user, loading,fetchSession,error,fetchMerch,merch,guadagnoTotale,pezziVenduti,loadingMerch,fetchMail,allMail,setAllMail }}>
       {children}
     </SupabaseContext.Provider>
   );

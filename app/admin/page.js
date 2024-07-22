@@ -21,7 +21,7 @@ const Page = () => {
     guadagnoTotale,
     pezziVenduti,
     loadingMerch,
-    fetchMail,
+   setAllMail,
     allMail,
   } = useSupabase();
   const [messaggio, setMessaggio] = useState("");
@@ -82,6 +82,22 @@ const Page = () => {
       throw new Error("Login failed");
     }
   };
+
+  const fetchMail= async () => {
+    
+    const res = await fetch("/api/mail");
+    if (res.ok) {
+      const data = await res.json();
+    
+    setAllMail(data)
+    } else {
+      throw new Error('Failed to fetch newsletter data');
+    }
+    setLoading(false);
+  
+};
+
+
 
   useEffect(() => {
     fetchSession();
