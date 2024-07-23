@@ -431,12 +431,12 @@ onClick={()=>openConfirmDelivered(item)}
 
 <Modal show={confirmDelivered} onHide={closeConfirmDelivered}>
 <Modal.Body>
-  
-  Vuoi confermare la spediczione?
+
+ { switchDelivered.delivered===false ? 'Vuoi confermare la spedizione?': 'Vuoi annullare la spezione?'}
 </Modal.Body>
 <Modal.Footer>
   <Button onClick={closeConfirmDelivered}>Chiudi</Button>
-  <Button onClick={()=>{delivered(switchDelivered);setConfirmDelivered(false) }}>Si, Confermo</Button>
+  <Button onClick={()=>{delivered(switchDelivered);setConfirmDelivered(false) }}>{ switchDelivered.delivered===false ? 'Si Confermo Spedizione': 'Si Annulla Spedizione '}</Button>
 </Modal.Footer>
 </Modal>
 
