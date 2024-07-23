@@ -1,7 +1,7 @@
 // app/admin/page.js
 "use client";
 
-import {  useState } from "react";
+import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useSupabase } from "../supabaseContext";
 import React from "react";
@@ -9,7 +9,7 @@ import Modal from "react-bootstrap/Modal";
 import Image from "next/image";
 import { Table } from "react-bootstrap";
 import { format } from "date-fns";
-import Toggle from 'react-toggle'
+import Toggle from "react-toggle";
 const Page = () => {
   const {
     newsletterData,
@@ -18,9 +18,9 @@ const Page = () => {
     guadagnoTotale,
     pezziVenduti,
     loadingMerch,
-   fetchMail,
+    fetchMail,
     allMail,
-   delivered
+    delivered,
   } = useSupabase();
   const [messaggio, setMessaggio] = useState("");
   const [oggetto, setOggetto] = useState("");
@@ -32,13 +32,16 @@ const Page = () => {
   const [titoloMailModal, setTitoloMailModal] = useState("");
   const [oggettoMail, setOggettoMail] = useState("");
   const [messaggioMail, setMessaggioMail] = useState("");
-  const [dataMail,setdataMail]=useState('')
+  const [dataMail, setdataMail] = useState("");
   const [modalMail, setModalMail] = useState(false);
-  const [ confirmDelivered, setConfirmDelivered] = useState(false)
-  const [switchDelivered,setSwithcDelivered] = useState(false)
+  const [confirmDelivered, setConfirmDelivered] = useState(false);
+  const [switchDelivered, setSwithcDelivered] = useState(false);
 
-  const openConfirmDelivered=(item)=>{ setSwithcDelivered(item); setConfirmDelivered(true)}
-  const closeConfirmDelivered = () => setConfirmDelivered(false)  
+  const openConfirmDelivered = (item) => {
+    setSwithcDelivered(item);
+    setConfirmDelivered(true);
+  };
+  const closeConfirmDelivered = () => setConfirmDelivered(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const closeOrdiniTotali = () => setOrdiniTotali(false);
@@ -77,17 +80,12 @@ const Page = () => {
       setTitolo("");
       setOggetto("");
       setEmailSent(true);
-
-      
     } else {
       setError("invio email fallito");
       throw new Error("Login failed");
     }
     fetchMail();
   };
-
-
-
 
   const loader = (
     <svg viewBox="25 25 50 50" className="circleLoader">
@@ -100,8 +98,8 @@ const Page = () => {
 
     setTitoloMailModal(mail.titolo);
     setOggettoMail(mail.oggetto);
-    setMessaggioMail(mail.messaggio)
-    setdataMail(format(mail.created_at, "dd/MM/yyyy HH:mm"))
+    setMessaggioMail(mail.messaggio);
+    setdataMail(format(mail.created_at, "dd/MM/yyyy HH:mm"));
   };
 
   const closeModalMail = () => {
@@ -117,7 +115,7 @@ const Page = () => {
           height={1000}
           alt="sofa"
           className="titolo"
-                    style={{ width: "100%", height: "auto" }}
+          style={{ width: "100%", height: "auto" }}
         />
       </div>
 
@@ -174,11 +172,6 @@ const Page = () => {
                     Attualmente ci sono {newsletterData.length} email registrate
                     nella nostra newsletter
                   </h6>
-                  {/* <ul>
-                      {newsletterData.map((item) => (
-                        <li key={item.id}>{item.email}</li>
-                      ))}
-                    </ul> */}
 
                   <Button variant="dark" onClick={downloadCSV}>
                     Download CSV
@@ -197,7 +190,6 @@ const Page = () => {
                             value={oggetto}
                             className="p-2"
                             onChange={(e) => setOggetto(e.target.value)}
-                          
                           />
                         </div>
                         <div className=" col-12">
@@ -209,19 +201,18 @@ const Page = () => {
                           />
                         </div>
 
-<div className="col-12 ">
-                        <textarea
-                          placeholder="Messaggio"
-                          value={messaggio}
-                          onChange={(e) => setMessaggio(e.target.value)}
-                          rows={10}
-                          style={{ width: "100%" }}
-                          className="p-2"
-                        />
+                        <div className="col-12 ">
+                          <textarea
+                            placeholder="Messaggio"
+                            value={messaggio}
+                            onChange={(e) => setMessaggio(e.target.value)}
+                            rows={10}
+                            style={{ width: "100%" }}
+                            className="p-2"
+                          />
+                        </div>
                       </div>
 
-                      </div>
-                      
                       <div className="col">
                         <Button variant="dark" onClick={handleShow}>
                           Invia email
@@ -272,27 +263,60 @@ const Page = () => {
             </div>
           </div>
 
-          <Modal show={modalMail} onHide={closeModalMail} centered >
+          <Modal show={modalMail} onHide={closeModalMail} centered>
             <Modal.Header>
-           <div className="row">
-            <div className="col-12"><p><span style={{fontSize:'15px',color:'#ffffff50'}}>Data </span><br/>{dataMail}</p></div>
-               <div className="col-12"> <p><span style={{fontSize:'15px',color:'#ffffff50'}}>Oggetto </span> <br/>{oggettoMail}</p> </div>
-             <div className="col-12">   <p> <span style={{fontSize:'15px',color:'#ffffff50'}}>Titolo </span><br/>{titoloMailModal}</p> </div>
-           </div>
+              <div className="row">
+                <div className="col-12">
+                  <p>
+                    <span style={{ fontSize: "15px", color: "#ffffff50" }}>
+                      Data{" "}
+                    </span>
+                    <br />
+                    {dataMail}
+                  </p>
+                </div>
+                <div className="col-12">
+                  {" "}
+                  <p>
+                    <span style={{ fontSize: "15px", color: "#ffffff50" }}>
+                      Oggetto{" "}
+                    </span>{" "}
+                    <br />
+                    {oggettoMail}
+                  </p>{" "}
+                </div>
+                <div className="col-12">
+                  {" "}
+                  <p>
+                    {" "}
+                    <span style={{ fontSize: "15px", color: "#ffffff50" }}>
+                      Titolo{" "}
+                    </span>
+                    <br />
+                    {titoloMailModal}
+                  </p>{" "}
+                </div>
+              </div>
             </Modal.Header>
 
             <Modal.Body>
-              <div><span style={{fontSize:'15px',color:'#ffffff50'}}>Messaggio</span><br/>{messaggioMail}</div>
-           <div className="text-end">
-                <Button variant="secondary" onClick={closeModalMail} className="mt-5">
+              <div>
+                <span style={{ fontSize: "15px", color: "#ffffff50" }}>
+                  Messaggio
+                </span>
+                <br />
+                {messaggioMail}
+              </div>
+              <div className="text-end">
+                <Button
+                  variant="secondary"
+                  onClick={closeModalMail}
+                  className="mt-5"
+                >
                   Chiudi
                 </Button>
-           </div>
+              </div>
             </Modal.Body>
-         
-            
-             
-         
           </Modal>
 
           <Modal show={show} onHide={handleClose} centered>
@@ -396,25 +420,12 @@ const Page = () => {
                             {item.telefono} - {item.email}
                           </td>
                           <td>
-                            <>
-                              {/* <Toggle
-    defaultChecked={item.delivered === false? false: true}
-    aria-label='No label tag'
-    onChange={()=>openConfirmDelivered(item)
-    // delivered(item)
-    
-    } /> */}
-
-<Toggle
-  checked={item.delivered === false? false: true}
-onClick={()=>openConfirmDelivered(item)}
-  name='toastIsReady'
-   />
-
-                            </>
-     
-                       
-                            </td>
+                            <Toggle
+                              checked={item.delivered === false ? false : true}
+                              onClick={() => openConfirmDelivered(item)}
+                              name="toastIsReady"
+                            />
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -429,18 +440,26 @@ onClick={()=>openConfirmDelivered(item)}
             </div>
           )}
 
-<Modal show={confirmDelivered} onHide={closeConfirmDelivered}>
-<Modal.Body>
-
- { switchDelivered.delivered===false ? 'Vuoi confermare la spedizione?': 'Vuoi annullare la spezione?'}
-</Modal.Body>
-<Modal.Footer>
-  <Button onClick={closeConfirmDelivered}>Chiudi</Button>
-  <Button onClick={()=>{delivered(switchDelivered);setConfirmDelivered(false) }}>{ switchDelivered.delivered===false ? 'Si Confermo Spedizione': 'Si Annulla Spedizione '}</Button>
-</Modal.Footer>
-</Modal>
-
-
+          <Modal show={confirmDelivered} onHide={closeConfirmDelivered}>
+            <Modal.Body>
+              {switchDelivered.delivered === false
+                ? "Vuoi confermare la spedizione?"
+                : "Vuoi annullare la spezione?"}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={closeConfirmDelivered}>Chiudi</Button>
+              <Button
+                onClick={() => {
+                  delivered(switchDelivered);
+                  setConfirmDelivered(false);
+                }}
+              >
+                {switchDelivered.delivered === false
+                  ? "Si Confermo Spedizione"
+                  : "Si Annulla Spedizione "}
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </>
       ) : (
         <p>Non sei autorizzato ad accedere a questa pagina </p>

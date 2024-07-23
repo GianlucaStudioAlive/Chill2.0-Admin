@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import sgMail from "@sendgrid/mail";
-import { createClient } from '@supabase/supabase-js';
-// Configura il client Supabase
+import { createClient } from "@supabase/supabase-js";
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -18,30 +18,29 @@ export async function POST(request) {
     );
   }
 
+  const { newsletter, messaggio, titolo, oggetto } = data;
+  const { data: postMail, error } = await supabase
+    .from("mail")
+    .insert([
+      {
+        titolo: titolo,
+        oggetto: oggetto,
+        messaggio: messaggio,
+      },
+    ])
+    .select();
+  if (error) {
+    console.log(error);
+  }
 
-
- const { newsletter,messaggio,titolo, oggetto } = data;
-  const {data:postMail,error}=await supabase
-  .from('mail')
-  .insert([{
-    titolo:titolo,
-    oggetto:oggetto,
-    messaggio:messaggio
-  }])
-  .select()
-if(error){console.log(error)}
-
- 
-
-  const emailPromises = newsletter.map(( email ) => {
-  
+  const emailPromises = newsletter.map((email) => {
     const msg = {
       to: email.email,
       from: {
-        email: 'info@chillduepuntozero.it',
-        name: 'Chill2.0 - Newsletter'
+        email: "info@chillduepuntozero.it",
+        name: "Chill2.0 - Newsletter",
       },
-      subject:`${oggetto}`,
+      subject: `${oggetto}`,
       html: `
       <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
           <div style="text-align: center; margin-bottom: 20px;">
@@ -57,14 +56,14 @@ if(error){console.log(error)}
               <a href="https://chillduepuntozero.it" style="color: #00aaff; text-decoration: none;">Visita il nostro sito</a>
           </div>
       </div>
-  `
+  `,
     };
 
     return sgMail.send(msg);
   });
 
   try {
-    // Invia tutte le email in parallelo
+   
     await Promise.all(emailPromises);
 
     return NextResponse.json(

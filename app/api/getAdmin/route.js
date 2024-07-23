@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function GET(request) {
   try {
     const adminID = process.env.ADMIN_ID;
-    
+
     if (!adminID) {
-      throw new Error('Admin ID not found');
+      throw new Error("Admin ID not found");
     }
 
     return NextResponse.json({ adminID });
