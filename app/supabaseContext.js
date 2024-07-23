@@ -22,7 +22,7 @@ export const SupabaseProvider = ({ children }) => {
   const [pezziVenduti, setPezziVenduti] = useState();
   const [allMail, setAllMail] = useState([]);
   const router = useRouter();
-
+  
   useEffect(() => {
     if (user) {
       const fetchNewsletter = async () => {
@@ -152,8 +152,9 @@ export const SupabaseProvider = ({ children }) => {
         setError("Errore di configurazione");
         return;
       }
-{console.log(signInData.user.id , dataAdmin.adminID)}
+
       if (signInData.user.id !== dataAdmin.adminID) {
+        {console.log(signInData.user.id , dataAdmin.adminID)}
         setError("Non sei autorizzato ad accedere a questa pagina");
         return;
       }
