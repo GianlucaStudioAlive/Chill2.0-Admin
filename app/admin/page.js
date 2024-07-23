@@ -391,9 +391,11 @@ const Page = () => {
                       <tr>
                         <th>#</th>
                         <th>Data Ordine</th>
-                        <th>Item</th>
-                        <th>Colore</th>
                         <th>Quantità</th>
+                        <th>Item</th>
+                        <th>Colore Montatura</th>
+                        <th>Colore Lenti</th>
+                        <th>Gradazione</th>
                         <th>Prezzo</th>
                         <th>Nome</th>
                         <th>Cognome</th>
@@ -407,9 +409,11 @@ const Page = () => {
                         <tr key={index}>
                           <td>{item.id}</td>
                           <td>{format(item.created_at, "dd/MM/yyyy HH:mm")}</td>
+                          <td>{item.quantity}</td>
                           <td>{item.item}</td>
                           <td>{item.colore}</td>
-                          <td>{item.quantity}</td>
+                          <td>{item.coloreLenti}</td>
+                          <td>{item.gradazione}</td>
                           <td>{item.price}</td>
                           <td>{item.name}</td>
                           <td>{item.surname}</td>
