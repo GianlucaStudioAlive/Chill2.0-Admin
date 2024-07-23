@@ -152,7 +152,7 @@ export const SupabaseProvider = ({ children }) => {
         setError("Errore di configurazione");
         return;
       }
-
+{console.log(signInData.user.id , dataAdmin.adminID)}
       if (signInData.user.id !== dataAdmin.adminID) {
         setError("Non sei autorizzato ad accedere a questa pagina");
         return;
