@@ -9,7 +9,7 @@ import Modal from "react-bootstrap/Modal";
 import Image from "next/image";
 import { Table } from "react-bootstrap";
 import { format } from "date-fns";
-
+import Toggle from 'react-toggle'
 const Page = () => {
   const {
     newsletterData,
@@ -20,6 +20,7 @@ const Page = () => {
     loadingMerch,
    fetchMail,
     allMail,
+   delivered
   } = useSupabase();
   const [messaggio, setMessaggio] = useState("");
   const [oggetto, setOggetto] = useState("");
@@ -33,7 +34,11 @@ const Page = () => {
   const [messaggioMail, setMessaggioMail] = useState("");
   const [dataMail,setdataMail]=useState('')
   const [modalMail, setModalMail] = useState(false);
+  const [ confirmDelivered, setConfirmDelivered] = useState(false)
+  const [switchDelivered,setSwithcDelivered] = useState(false)
 
+  const openConfirmDelivered=(item)=>{ setSwithcDelivered(item); setConfirmDelivered(true)}
+  const closeConfirmDelivered = () => setConfirmDelivered(false)  
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const closeOrdiniTotali = () => setOrdiniTotali(false);
@@ -84,9 +89,8 @@ const Page = () => {
 
 
 
-
   const loader = (
-    <svg viewBox="25 25 50 50">
+    <svg viewBox="25 25 50 50" className="circleLoader">
       <circle r="20" cy="50" cx="50"></circle>
     </svg>
   );
@@ -391,7 +395,26 @@ const Page = () => {
                           <td>
                             {item.telefono} - {item.email}
                           </td>
-                          <td>{item.delivered === true ? "si" : "no"} </td>
+                          <td>
+                            <>
+                              {/* <Toggle
+    defaultChecked={item.delivered === false? false: true}
+    aria-label='No label tag'
+    onChange={()=>openConfirmDelivered(item)
+    // delivered(item)
+    
+    } /> */}
+
+<Toggle
+  checked={item.delivered === false? false: true}
+onClick={()=>openConfirmDelivered(item)}
+  name='toastIsReady'
+   />
+
+                            </>
+     
+                       
+                            </td>
                         </tr>
                       ))}
                     </tbody>
@@ -405,6 +428,19 @@ const Page = () => {
               </Modal>
             </div>
           )}
+
+<Modal show={confirmDelivered} onHide={closeConfirmDelivered}>
+<Modal.Body>
+  
+  Vuoi confermare la spediczione?
+</Modal.Body>
+<Modal.Footer>
+  <Button onClick={closeConfirmDelivered}>Chiudi</Button>
+  <Button onClick={()=>{delivered(switchDelivered);setConfirmDelivered(false) }}>Si, Confermo</Button>
+</Modal.Footer>
+</Modal>
+
+
         </>
       ) : (
         <p>Non sei autorizzato ad accedere a questa pagina </p>

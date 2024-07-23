@@ -18,7 +18,7 @@ export const SupabaseProvider = ({ children }) => {
   const [newsletterData, setNewsletterData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMerch, setLoadingMerch] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(true);
   const [error,setError] = useState('')
   const [merch,setMerch] = useState()
   const [guadagnoTotale, setGuadagnoTotale] = useState();
@@ -96,7 +96,7 @@ if(user){ const fetchMerch = async () => {
 const {data,error}= await supabase
 .from('merch')
 .select('*')
-
+.order("id", { ascending: false });
 if(data){
 
   setMerch(data)
@@ -129,7 +129,31 @@ return
 }
  },[user,])
 
+ const delivered = async (merchDelivered)=>{
+console.log(merchDelivered)
+const{data,error} = await supabase
 
+.from('merch')
+.update({
+  'delivered':!merchDelivered.delivered
+ })
+ .eq('id',merchDelivered.id)
+.select()
+if(data){
+ 
+
+
+    const {data,error}= await supabase
+    .from('merch')
+    .select('*')
+    .order("id", { ascending: false });
+    if(data){
+    
+      setMerch(data)
+        }
+}
+}
+ 
 
  const signIn = async (email, password) => {
   try {
@@ -190,7 +214,7 @@ return
  
 
   return (
-    <SupabaseContext.Provider value={{ signIn, newsletterData, user, loading,error,merch,guadagnoTotale,pezziVenduti,loadingMerch,fetchMail,allMail,setAllMail }}>
+    <SupabaseContext.Provider value={{ signIn, newsletterData, user, loading,error,merch,guadagnoTotale,pezziVenduti,loadingMerch,fetchMail,allMail,setAllMail,delivered }}>
       {children}
     </SupabaseContext.Provider>
   );
