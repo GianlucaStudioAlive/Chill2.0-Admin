@@ -36,6 +36,7 @@ export async function POST(request) {
   const emailPromises = newsletter.map((email) => {
     const msg = {
       to: email.email,
+ 
       from: {
         email: "info@chillduepuntozero.it",
         name: "Chill2.0 - Newsletter",

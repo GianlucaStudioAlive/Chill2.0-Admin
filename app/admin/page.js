@@ -10,6 +10,8 @@ import Image from "next/image";
 import { Table } from "react-bootstrap";
 import { format } from "date-fns";
 import Toggle from "react-toggle";
+import { Editor as TinyMCEEditor } from "@tinymce/tinymce-react";
+
 const Page = () => {
   const {
     newsletterData,
@@ -202,14 +204,37 @@ const Page = () => {
                         </div>
 
                         <div className="col-12 ">
-                          <textarea
+                        <TinyMCEEditor
+      value={messaggio}
+    apiKey="h95f2u0yc8aio3ju3nllka6m2zdx9yu4w1z0sl0i9kz1ks8r"
+    onEditorChange={(content) => setMessaggio(content)}
+    init={{
+      height: 500,
+      menubar: false,
+      plugins: [
+        'advlist autolink lists link image charmap print preview anchor',
+        'searchreplace visualblocks code fullscreen',
+        'insertdatetime media table paste code help wordcount',
+        'link '
+      ],
+      toolbar: 'undo redo | formatselect | bold italic backcolor | \
+                alignleft aligncenter alignright alignjustify link| \
+                bullist numlist outdent indent | removeformat | help',
+                browser_spellcheck: true,
+                contextmenu: false,
+                force_br_newlines: true,
+                forced_root_block: '', // Aggiungi questa opzione
+                convert_newlines_to_brs: true, // Aggiungi questa opzione
+    }}
+  />
+                          {/* <textarea
                             placeholder="Messaggio"
                             value={messaggio}
                             onChange={(e) => setMessaggio(e.target.value)}
                             rows={10}
                             style={{ width: "100%" }}
                             className="p-2"
-                          />
+                          /> */}
                         </div>
                       </div>
 
@@ -473,3 +498,31 @@ const Page = () => {
 };
 
 export default Page;
+
+
+
+// <div className="mt-4 p-0">
+//   <TinyMCEEditor
+//     value={messaggio}
+//     apiKey="3qs86lepyzhjc29t9wrzcheb93gh8ri97t03ncfis5uepgxr"
+//     onEditorChange={(content) => setCorpoTesto(content)}
+//     init={{
+//       height: 500,
+//       menubar: false,
+//       plugins: [
+//         'advlist autolink lists link image charmap print preview anchor',
+//         'searchreplace visualblocks code fullscreen',
+//         'insertdatetime media table paste code help wordcount',
+//         'link '
+//       ],
+//       toolbar: 'undo redo | formatselect | bold italic backcolor | \
+//                 alignleft aligncenter alignright alignjustify link| \
+//                 bullist numlist outdent indent | removeformat | help',
+//                 browser_spellcheck: true,
+//                 contextmenu: false,
+//                 force_br_newlines: true,
+//                 forced_root_block: '', // Aggiungi questa opzione
+//                 convert_newlines_to_brs: true, // Aggiungi questa opzione
+//     }}
+//   />
+// </div>
